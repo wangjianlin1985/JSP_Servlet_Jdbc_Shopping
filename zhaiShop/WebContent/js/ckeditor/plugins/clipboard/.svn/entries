@@ -1,0 +1,39 @@
+10
+
+dir
+4
+svn://localhost/zhaiShop/WebRoot/js/ckeditor/plugins/clipboard
+svn://localhost
+
+
+
+2016-02-06T12:44:08.142351Z
+4
+lzx
+
+
+svn:special svn:externals svn:needs-lock
+
+
+
+
+
+
+
+
+
+
+
+098254a8-5cf3-1645-b984-89385e3a53f4
+
+
+
+
+
+
+0
+empty
+
+dialogs
+dir
+

@@ -1,0 +1,58 @@
+<%@ page language="java" import="java.util.*" pageEncoding="UTF-8"%>
+<div class="header">
+	<a href="/zhaiShop" class="logo" title="宅商城系统"><img src="images/logo.png"
+		alt="宅商城系统" /></a>
+	<div class="header_center">
+		<div class="search">
+			<form action="search" name="Searchform" method="post">
+				<p>
+					<input type="text" name="name" placeholder="输入您想要的商品"
+						class="search" /><a rel="nofollow" href="javascript:vod(0)"
+						class="search_btn"></a>
+				</p>
+				<input type="hidden" name="p" value="1" />
+				<!-- <input type="hidden" name="type" id="type" value="1" /> -->
+			</form>
+		</div>
+		<div class="tag">
+			热门搜索： <a href="#">佳沃智利进口蓝莓</a> <a href="#">香蕉</a> <a href="#">苹果</a>
+			<a href="#">香梨</a> <a href="#">红提</a>
+		</div>
+	</div>
+	<div class="top_right">
+		<a rel="nofollow" href="index.cart" class="shopping_cart" id="shopping_cart"
+			style="display:">购物车<span id="docerCartBtn" class="yellow"></span></a>
+		<div id="goods" class="sc_goods" style="display:none;">
+			<ul class="sc_goods_ul">
+				<!-- 查询购物车 -->
+				<c:forEach items="${gwcGoodsList }" var="g">
+					<li>
+						<dl>
+							<dt class="mini-img">
+								<a href="goodsPageServlet?id=${g.id }"><img
+									src="${g.proPic }" height="40" width="40" /></a>
+							</dt>
+							<dd>
+								<span class="mini_title"><a
+									href="goodsPageServlet?id=${g.id }">${g.name }</a></span> <span
+									class="mini-cart-count red"> ￥ ${g.price }<em
+									class="${g.id }">*${g.num }</em></span>
+							</dd>
+							<dd>
+								<span class="mini-cart-info"></span> <span
+									class="mini-cart-del"><a name="${g.id }" rel="del"
+									onclick="delcommon(event);return false;">删除</a></span>
+							</dd>
+						</dl>
+					</li>
+				</c:forEach>
+				<c:if test="${gwcGoodsList.size()==0 }">
+					<p class="sc_goods_none">您的购物车还是空的，赶紧行动吧！</p>
+				</c:if>
+			</ul>
+			<div class="sc_goods_foot" <c:if test="${gwcGoodsList.size()==0 }">style="display:none;"</c:if>>
+				<a rel="nofollow" href="index.cart" class="my_shopping_cart_btn">查看我的购物车</a>
+			</div>
+		</div>
+	</div>
+</div>

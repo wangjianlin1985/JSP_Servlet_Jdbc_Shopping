@@ -1,0 +1,162 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd" id="WebApp_ID" version="3.0">
+  <display-name>zhaiShop</display-name>
+  <welcome-file-list>
+    <welcome-file>index.html</welcome-file>
+    <welcome-file>index.htm</welcome-file>
+    <welcome-file>index.jsp</welcome-file>
+    <welcome-file>default.html</welcome-file>
+    <welcome-file>default.htm</welcome-file>
+    <welcome-file>default.jsp</welcome-file>
+  </welcome-file-list>
+  <resource-ref>
+  	<res-ref-name>zhaiShop</res-ref-name>
+  	<res-type>javax.sql.DataSource</res-type>
+  	<res-auth>Container</res-auth>
+  </resource-ref>
+  <servlet>
+    <servlet-name>userList</servlet-name>
+    <servlet-class>me.ilt.Servlet.userServlet</servlet-class>
+  </servlet>
+  <!-- 商品大类 -->
+  <servlet>
+    <servlet-name>bigTypeServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.bigTypeServlet</servlet-class>
+  </servlet>
+  <!-- 商品小类 -->
+  <servlet>
+    <servlet-name>smallTypeServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.smallTypeServlet</servlet-class>
+  </servlet>
+  <!-- 上传文件 -->
+  <servlet>
+    <servlet-name>uploadFile</servlet-name>
+    <servlet-class>me.ilt.Servlet.UploadFile</servlet-class>
+  </servlet>
+
+  <servlet-mapping>
+    <servlet-name>userList</servlet-name>
+    <url-pattern>*.user</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>bigTypeServlet</servlet-name>
+    <url-pattern>*.big</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>smallTypeServlet</servlet-name>
+    <url-pattern>*.small</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>uploadFile</servlet-name>
+    <url-pattern>/uploadFile</url-pattern>
+  </servlet-mapping>
+  
+  <!-- 编码过滤器 -->
+  <filter>
+    <filter-name>encoding</filter-name>
+    <filter-class>me.ilt.Util.encodingFilter</filter-class>
+  </filter>
+  <filter-mapping>
+    <filter-name>encoding</filter-name>
+    <url-pattern>/*</url-pattern>
+  </filter-mapping>
+  <!-- session监控 -->
+  <listener>
+  	<listener-class>me.ilt.Util.SesListener</listener-class>
+  </listener>
+  <!-- application监控 -->
+  <listener>
+  	<listener-class>me.ilt.Util.applicationListener</listener-class>
+  </listener>
+  
+  <!-- 验证码 -->
+  <servlet>
+    <servlet-name>GenImageServlet</servlet-name>
+    <servlet-class>me.ilt.Util.yzm</servlet-class>
+  </servlet>
+  <!-- 商品 -->
+  <servlet>
+    <servlet-name>goodsServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.goodsServlet</servlet-class>
+  </servlet>
+  <!-- 首页幻灯 -->
+  <servlet>
+    <servlet-name>slideServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.slideServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>indexServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.indexServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>goodsPageServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.goodsPageServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>searchServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.searchServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>cartServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.cartServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>orderServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.orderServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>addressServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.addressServlet</servlet-class>
+  </servlet>
+  <servlet>
+    <servlet-name>pageServlet</servlet-name>
+    <servlet-class>me.ilt.Servlet.pageServlet</servlet-class>
+  </servlet>
+
+
+
+
+
+
+
+  <servlet-mapping>
+    <servlet-name>addressServlet</servlet-name>
+    <url-pattern>*.address</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>GenImageServlet</servlet-name>
+    <url-pattern>*.yzm</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>slideServlet</servlet-name>
+    <url-pattern>*.slide</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>goodsServlet</servlet-name>
+    <url-pattern>*.goods</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>indexServlet</servlet-name>
+    <url-pattern>/indexServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>goodsPageServlet</servlet-name>
+    <url-pattern>/goodsPageServlet</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>searchServlet</servlet-name>
+    <url-pattern>/search</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>cartServlet</servlet-name>
+    <url-pattern>*.cart</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>orderServlet</servlet-name>
+    <url-pattern>*.order</url-pattern>
+  </servlet-mapping>
+  <servlet-mapping>
+    <servlet-name>pageServlet</servlet-name>
+    <url-pattern>*.page</url-pattern>
+  </servlet-mapping>
+</web-app>

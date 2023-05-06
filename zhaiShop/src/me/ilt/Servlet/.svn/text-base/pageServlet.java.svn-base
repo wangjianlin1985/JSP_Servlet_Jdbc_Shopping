@@ -1,0 +1,89 @@
+package me.ilt.Servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.lang.reflect.Method;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import me.ilt.Bean.bigTypeBean;
+import me.ilt.Bean.goodsBean;
+import me.ilt.Bean.orderBean;
+import me.ilt.Dao.bigTypeDao;
+import me.ilt.Dao.goodsDao;
+import me.ilt.Dao.orderDao;
+import me.ilt.Dao.usersDao;
+
+public class pageServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		doPost(request, response);
+	}
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+
+		String MethodName = request.getServletPath();
+		MethodName = MethodName.substring(1, MethodName.length() - 5);
+		System.out.println("MethodName："+MethodName);
+		try {
+			Method method = getClass().getDeclaredMethod(MethodName,
+					HttpServletRequest.class, HttpServletResponse.class);
+			method.invoke(this, request, response);
+		} catch (Exception e) {
+			 e.printStackTrace();
+		}
+	}
+	public void userMain(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		System.out.println("进入了用户中心");
+		String username = (String)request.getSession().getAttribute("username");
+		if(username==null){
+			response.sendRedirect("login.jsp");
+		}else{
+			int userId = usersDao.nameIsId(username);
+			List<orderBean> orderList =orderDao.userIdIsorder(userId);
+			request.setAttribute("orderList", orderList); //放入订单集合
+			
+			//获取购物车
+			HashMap<String, goodsBean> gwc = (HashMap)request.getSession().getAttribute("gwc");
+			Set keyList = gwc.keySet();
+			Iterator it = keyList.iterator();
+			
+			List<goodsBean> goodsList = new ArrayList<goodsBean>();
+			while(it.hasNext()){
+				String hid = (String)it.next();
+				goodsBean hgoods = gwc.get(hid);
+				int num = hgoods.getNum(); //获取这个商品的数量
+				goodsBean hgoods2 = goodsDao.gwcGoodsIdSel(Integer.parseInt(hid)); //从数据库查找
+				hgoods2.setNum(num);
+				goodsList.add(hgoods2);
+			}
+			//打印购物车
+			System.out.println("打印购物车");
+			for (int i = 0; i < goodsList.size(); i++) {
+				goodsBean gb = goodsList.get(i);
+				System.out.println("ID="+gb.getId()+",name="+gb.getName()+",proce="+gb.getPrice()+",proPic="+gb.getProPic()+",num="+gb.getNum());
+			}
+			
+			List<bigTypeBean> bigTypes = bigTypeDao.bigselList(); //获取大类及小类级联
+			
+			request.setAttribute("bigTypes", bigTypes); //放入购物车集合
+			request.setAttribute("gwcGoodsList", goodsList); //放入购物车集合
+			request.getRequestDispatcher("userMain.jsp").forward(request, response);
+			
+			
+		}
+	}
+
+}

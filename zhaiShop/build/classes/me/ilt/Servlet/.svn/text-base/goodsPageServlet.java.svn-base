@@ -1,0 +1,70 @@
+package me.ilt.Servlet;
+
+import java.io.IOException;
+import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Set;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServlet;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+
+import me.ilt.Bean.bigTypeBean;
+import me.ilt.Bean.goodsBean;
+import me.ilt.Dao.bigTypeDao;
+import me.ilt.Dao.goodsDao;
+
+public class goodsPageServlet extends HttpServlet {
+
+	public void doGet(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		doPost(request, response);
+
+	}
+
+
+	public void doPost(HttpServletRequest request, HttpServletResponse response)
+			throws ServletException, IOException {
+		int id = Integer.parseInt(request.getParameter("id")); //获取宝贝的ID
+		List<bigTypeBean> bigTypes = bigTypeDao.bigselList(); //获取大类及小类级联
+		goodsBean g = goodsDao.goodsIdSel(id);
+		System.out.println("商品名称："+g.getName()+"  商品价格："+g.getPrice()+"  图片路径："+g.getProPic()+"  商品分类："+g.getBrand()+"  商品销量："+g.getSales()+"  浏览量："+g.getViews()+"  商品库存："+g.getStock()+"  商品描述："+g.getContents()+"  大类ID："+g.getBigTypeId()+"  大类名称："+g.getBigTypeName()+"  小类ID："+g.getSmallTypeId()+"  小类名称："+g.getSmallTypeName());
+		List<goodsBean> xgGoods = goodsDao.bigTypeIdSelxg(g.getBigTypeId()); //获取相关商品
+		
+		request.setAttribute("bigTypes", bigTypes);
+		request.setAttribute("goodsBean", g);
+		request.setAttribute("xgGoods", xgGoods);
+		goodsDao.addViews(id); //浏览量加1
+		
+		//获取购物车
+		HashMap<String, goodsBean> gwc = (HashMap)request.getSession().getAttribute("gwc");
+		Set keyList = gwc.keySet();
+		Iterator it = keyList.iterator();
+		
+		List<goodsBean> goodsList = new ArrayList<goodsBean>();
+		while(it.hasNext()){
+			String hid = (String)it.next();
+			goodsBean hgoods = gwc.get(hid);
+			int num = hgoods.getNum(); //获取这个商品的数量
+			goodsBean hgoods2 = goodsDao.gwcGoodsIdSel(Integer.parseInt(hid)); //从数据库查找
+			hgoods2.setNum(num);
+			goodsList.add(hgoods2);
+		}
+		//打印购物车
+		System.out.println("打印购物车");
+		for (int i = 0; i < goodsList.size(); i++) {
+			goodsBean gb = goodsList.get(i);
+			System.out.println("ID="+gb.getId()+",name="+gb.getName()+",proce="+gb.getPrice()+",proPic="+gb.getProPic()+",num="+gb.getNum());
+		}
+		request.setAttribute("gwcGoodsList", goodsList);
+		
+		
+		
+		request.getRequestDispatcher("goods.jsp").forward(request, response);
+	}
+
+}
